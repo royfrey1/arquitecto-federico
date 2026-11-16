@@ -1,0 +1,19 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
+
+/** Suscripción a un media query compatible con SSR (false en el servidor). */
+export function useMediaQuery(query: string) {
+  return useSyncExternalStore(
+    (cb) => {
+      const mql = window.matchMedia(query);
+      mql.addEventListener("change", cb);
+      return () => mql.removeEventListener("change", cb);
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
+}
+
+export const useReducedMotion = () => useMediaQuery("(prefers-reduced-motion: reduce)");
+export const useFinePointer = () => useMediaQuery("(hover: hover) and (pointer: fine)");

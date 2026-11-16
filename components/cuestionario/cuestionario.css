@@ -1,0 +1,526 @@
+/* ============================================================
+   /cuestionario — piel "editorial cinematográfico"
+   Se conservan los nombres de clase del cuestionario original
+   (.panel .q .opts .opt .card .btn .sum .view …) y solo cambia el estilo.
+   ============================================================ */
+
+.cq {
+  background: var(--crema);
+  color: var(--carbon);
+  min-height: 100svh;
+  padding-top: calc(var(--header-h) + 2px);
+}
+
+/* Barra de progreso fina dorada, pegada al header */
+.cq-prog {
+  position: fixed;
+  inset-inline: 0;
+  top: var(--header-h);
+  z-index: 49;
+  height: 2px;
+  background: rgb(20 20 20 / 0.08);
+}
+.cq-prog span {
+  display: block;
+  height: 100%;
+  background: var(--dorado);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-editorial);
+}
+
+.cq-main {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem 1rem 6rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (min-width: 640px) {
+  .cq-main {
+    padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .cq-main {
+    padding: 3.5rem 2.5rem 8rem;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr);
+    gap: 4rem;
+  }
+}
+
+.cq-col {
+  min-width: 0;
+  max-width: 46rem;
+}
+.cq-step {
+  min-height: 1.4em;
+  margin: 0 0 1.25rem;
+  color: var(--dorado-oscuro);
+}
+
+/* ---------- Panel / tipografía ---------- */
+.cq .panel {
+  margin: 0;
+}
+.cq .eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dorado-oscuro);
+}
+.cq h1,
+.cq h2 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 350;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
+  margin: 0.9rem 0 1.1rem;
+  text-wrap: balance;
+  outline: none;
+}
+.cq h1 {
+  font-size: clamp(3rem, 9vw, 6.5rem);
+}
+.cq h2 {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+}
+.cq h1 em,
+.cq h2 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--petroleo);
+}
+.cq .lead {
+  color: var(--texto-suave);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  margin: 0 0 2rem;
+  max-width: 36rem;
+}
+
+/* ---------- Preguntas ---------- */
+.cq .q {
+  margin: 0;
+  padding: 1.75rem 0 0;
+  border-top: 1px solid rgb(20 20 20 / 0.12);
+  margin-top: 1.75rem;
+}
+.cq .q > .lbl,
+.cq .q > label.lbl {
+  display: block;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+.cq .hint {
+  font-size: 0.875rem;
+  color: var(--texto-suave);
+  margin: -0.4rem 0 0.85rem;
+}
+.cq .opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.cq .opt {
+  position: relative;
+}
+.cq .opt input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.cq .opt span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.6rem 1.15rem;
+  border: 1px solid rgb(20 20 20 / 0.22);
+  border-radius: 999px;
+  background: transparent;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  transition:
+    background-color 0.3s var(--ease-editorial),
+    border-color 0.3s var(--ease-editorial),
+    color 0.3s var(--ease-editorial);
+}
+.cq .opt:hover span {
+  border-color: var(--carbon);
+}
+.cq .opt input:checked + span {
+  background: var(--petroleo);
+  border-color: var(--petroleo);
+  color: var(--crema);
+}
+.cq .opt input:focus-visible + span {
+  outline: 2px solid var(--petroleo);
+  outline-offset: 3px;
+}
+
+/* Tarjetas (tipo, alcance, estilos, paletas) */
+.cq .cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.625rem;
+}
+.cq .card span {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.2rem;
+  min-height: 6rem;
+  padding: 1rem 1.1rem;
+  border-radius: 6px;
+}
+.cq .card b {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.3rem;
+  line-height: 1.15;
+}
+.cq .card em {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  opacity: 0.85;
+}
+.cq .sw {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 0.5rem;
+}
+.cq .sw i {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1px solid rgb(0 0 0 / 0.15);
+}
+
+/* Campos */
+.cq input[type="text"],
+.cq input[type="tel"],
+.cq input[type="email"],
+.cq input[type="number"],
+.cq textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  color: var(--carbon);
+  background: rgb(255 255 255 / 0.45);
+  border: 1px solid rgb(20 20 20 / 0.22);
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+.cq textarea {
+  min-height: 6.25rem;
+  resize: vertical;
+}
+.cq input::placeholder,
+.cq textarea::placeholder {
+  color: #6b6f6b;
+}
+.cq input:focus-visible,
+.cq textarea:focus-visible {
+  outline: 2px solid var(--petroleo);
+  outline-offset: 2px;
+  border-color: var(--petroleo);
+}
+.cq .row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.cq .row label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+/* Indicador de pasos del panel */
+.cq .step-n {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+}
+.cq .step-n i {
+  width: 1.75rem;
+  height: 2px;
+  background: rgb(20 20 20 / 0.15);
+  transition: background-color 0.4s;
+}
+.cq .step-n i.on {
+  background: var(--dorado);
+}
+
+/* Navegación */
+.cq .nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgb(20 20 20 / 0.12);
+}
+.cq .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  padding: 0 1.75rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+}
+.cq .btn.p {
+  background: var(--petroleo);
+  color: var(--crema);
+  border: 1px solid var(--petroleo);
+}
+.cq .btn.p:hover {
+  background: #173d3d;
+}
+.cq .btn.s {
+  background: transparent;
+  color: var(--carbon);
+  border: 1px solid rgb(20 20 20 / 0.3);
+}
+.cq .btn.s:hover {
+  border-color: var(--carbon);
+  background: rgb(20 20 20 / 0.04);
+}
+.cq .btn[hidden] {
+  display: none;
+}
+.cq .note {
+  font-size: 0.875rem;
+  color: var(--texto-suave);
+  margin-top: 1rem;
+}
+
+/* Resumen / pasos de la intro */
+.cq .sum {
+  background: var(--crema-2);
+  border-radius: 6px;
+  padding: 1.4rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+}
+.cq .sum dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1.25rem;
+}
+.cq .sum dt {
+  font-weight: 600;
+  color: var(--dorado-oscuro);
+}
+.cq .sum dd {
+  margin: 0;
+}
+.cq .err {
+  display: none;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #8a2d1e;
+}
+.cq .check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--texto-suave);
+}
+.cq .check input {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+  accent-color: var(--petroleo);
+}
+
+/* ---------- Bosquejo en vivo ---------- */
+.cq .view {
+  position: sticky;
+  top: calc(var(--header-h) + 2px);
+  z-index: 30;
+  order: -1;
+  overflow: hidden;
+  background-color: var(--crema-2);
+  /* papel milimetrado, como la sección Render */
+  background-image:
+    linear-gradient(rgb(20 20 20 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(20 20 20 / 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  border: 1px solid rgb(20 20 20 / 0.1);
+  border-radius: 6px;
+  box-shadow: 0 12px 30px -18px rgb(20 20 20 / 0.35);
+}
+.cq .view-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.9rem;
+}
+.cq .live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dorado-oscuro);
+}
+.cq .live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dorado);
+}
+.cq .view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--carbon);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.cq .view-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: transform 0.4s var(--ease-editorial);
+}
+.cq .view[data-open="true"] .view-toggle svg {
+  transform: rotate(180deg);
+}
+.cq .view[data-open="false"] .view-body {
+  display: none;
+}
+.cq .view canvas {
+  display: block;
+  width: 100%;
+  height: 150px;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.cq .view canvas:focus-visible {
+  outline: 2px solid var(--petroleo);
+  outline-offset: -4px;
+}
+.cq .view .cap {
+  padding: 0.6rem 0.9rem 0.8rem;
+  border-top: 1px solid rgb(20 20 20 / 0.1);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--texto-suave);
+  background: rgb(242 235 221 / 0.7);
+}
+.cq .view .cap b {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: var(--carbon);
+  margin-bottom: 2px;
+}
+.cq .view .tags {
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.6rem;
+}
+.cq .view .tags span {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--petroleo);
+  background: rgb(30 76 76 / 0.08);
+}
+
+@media (min-width: 1024px) {
+  .cq .view {
+    top: calc(var(--header-h) + 2rem);
+    order: 0;
+  }
+  .cq .view-toggle {
+    display: none;
+  }
+  .cq .view[data-open="false"] .view-body {
+    display: block;
+  }
+  .cq .view canvas {
+    height: min(52svh, 480px);
+  }
+  .cq .view .cap {
+    padding: 1rem 1.25rem 1.2rem;
+    font-size: 0.875rem;
+  }
+  .cq .view .tags {
+    display: flex;
+  }
+}
+
+@media (max-width: 560px) {
+  .cq .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cq *,
+  .cq-prog span {
+    transition: none !important;
+  }
+}
+
+/* Mobile: bloque compacto (solo la etapa; el texto de ayuda aparece desde lg) */
+@media (max-width: 1023.98px) {
+  .cq .view .cap > span {
+    display: none;
+  }
+  .cq .view .cap b {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}

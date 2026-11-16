@@ -1,26 +1,277 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Tokens — "Editorial cinematográfico"
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --crema: #f2ebdd;
+  --crema-2: #e6ded0;
+  --carbon: #141414;
+  --carbon-2: #1f2a2a;
+  --petroleo: #1e4c4c;
+  --dorado: #a0823f;
+  /* Variantes para cumplir contraste AA en texto chico */
+  --dorado-oscuro: #6e5a2e; /* sobre crema */
+  --dorado-claro: #d9c08a; /* sobre petróleo */
+  --texto-suave: #4a5252;
+  --header-h: 76px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-crema: var(--crema);
+  --color-crema-2: var(--crema-2);
+  --color-carbon: var(--carbon);
+  --color-carbon-2: var(--carbon-2);
+  --color-petroleo: var(--petroleo);
+  --color-dorado: var(--dorado);
+  --color-dorado-oscuro: var(--dorado-oscuro);
+  --color-dorado-claro: var(--dorado-claro);
+  --color-texto-suave: var(--texto-suave);
+
+  --font-serif: var(--font-fraunces), "Times New Roman", serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   Base
+   ============================================================ */
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: var(--header-h);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--crema);
+  color: var(--carbon);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--petroleo);
+  color: var(--crema);
+}
+
+:focus-visible {
+  outline: 2px solid var(--dorado);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.on-light :focus-visible,
+.on-light:focus-visible {
+  outline-color: var(--petroleo);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* ============================================================
+   Tipografía editorial
+   ============================================================ */
+@utility font-display {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 350;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+
+@utility label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+@utility num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Palabras clave en itálica dorada */
+.kw {
+  font-style: italic;
+  color: var(--dorado);
+  font-weight: 300;
+}
+
+/* ============================================================
+   Revelados (estado inicial antes de hidratar)
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal-lines] {
+    visibility: hidden;
+  }
+}
+
+/* Indicador de scroll del hero */
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+.scroll-cue {
+  animation: scroll-cue 2.4s var(--ease-editorial) infinite;
+}
+
+/* Scrollbar oculto en carruseles */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   View Transitions (React <ViewTransition>, ver PageTransition.tsx)
+   ============================================================ */
+
+/* Clicks durante la transición pasan a la página viva */
+::view-transition {
+  pointer-events: none;
+}
+
+/* Cortina carbón detrás de las páginas que entran / salen (solo navegaciones etiquetadas) */
+:root:active-view-transition-type(obra-forward, obra-back)::view-transition {
+  background: var(--carbon);
+}
+
+/* Página saliente: se hunde y se apaga rápido */
+::view-transition-old(.page-forward),
+::view-transition-old(.page-back) {
+  animation: vt-page-out 420ms cubic-bezier(0.5, 0, 0.75, 0) both;
+}
+/* Página entrante: sube desde la cortina */
+::view-transition-new(.page-forward) {
+  animation: vt-page-in 900ms var(--ease-editorial) 260ms both;
+}
+::view-transition-new(.page-back) {
+  animation: vt-page-in-back 800ms var(--ease-editorial) 220ms both;
+}
+
+@keyframes vt-page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-2.5vh) scale(0.985);
+  }
+}
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6vh);
+  }
+}
+@keyframes vt-page-in-back {
+  from {
+    opacity: 0;
+    transform: translateY(-3vh);
+  }
+}
+
+/* Morph del poster de la obra → portada */
+::view-transition-group(.morph) {
+  z-index: 2;
+  animation-duration: 1000ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.15, 1);
+}
+::view-transition-image-pair(.morph) {
+  overflow: clip;
+}
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  /* Aspectos distintos (4:5 → 9:16): recortar en vez de deformar */
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  animation-duration: 1000ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.15, 1);
+}
+
+/* Header anclado: no participa del fundido */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* ============================================================
+   Apertura del hero (solo 1ª visita de la sesión, ver layout.tsx)
+   html[data-intro="playing"] se fija antes del primer pintado.
+   ============================================================ */
+[data-cine-bar] {
+  display: none;
+}
+html[data-intro="playing"] [data-cine-bar] {
+  display: block;
+}
+/* Formato 2.39:1 sobre el video */
+[data-cine-bar] {
+  height: max(0px, calc((100svh - 100vw / 2.39) / 2));
+}
+html[data-intro="playing"] [data-hero-fade] {
+  opacity: 0;
+}
+/* Header y WhatsApp entran al final de la apertura */
+html[data-intro="playing"] [data-intro-hide] {
+  opacity: 0;
+  pointer-events: none;
 }
